@@ -3,16 +3,35 @@
   "private": true,
   "type": "module",
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "packages/*"
   ],
   "scripts": {
     "start:mcp": "node apps/bright-mcp-clone/server.js",
     "start:bridge": "node apps/mcp-bridge/server.js",
     "start": "npm run start:bridge",
     "test": "node --test",
-    "sync:datasets": "node scripts/sync-datasets-from-reference.js"
+    "sync:datasets": "node scripts/sync-datasets-from-reference.js",
+    "build": "npm run build --workspaces",
+    "lint": "eslint . --ext js,ts,tsx",
+    "lint:fix": "npm run lint -- --fix",
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
+    "start:scraper": "tsx apps/scraper/src/index.ts"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "@types/node": "^24.5.1",
+    "@typescript-eslint/eslint-plugin": "^8.44.0",
+    "@typescript-eslint/parser": "^8.44.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^9.35.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "globals": "^16.4.0",
+    "pino-pretty": "^13.1.1",
+    "prettier": "^3.6.2",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.44.0"
   }
 }

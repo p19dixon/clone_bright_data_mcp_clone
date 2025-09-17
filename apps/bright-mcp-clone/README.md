@@ -1,16 +1,18 @@
 Bright Data Web MCP Clone (Clean Room)
 
 Overview
-- Functionally mirrors Bright Data's Web MCP: rapid tools, browser tools, and dataset-backed web_data_* tools.
-- Adds guardrails: domain allow/deny, robots policy flag, rate limit, batch caps.
+- Rapid tools now proxy through the bundled scraper service (markdown, HTML, search) for standalone use.
+- Optional browser and dataset tools still call Bright Data APIs when `PRO_MODE=true` and credentials are supplied.
+- Guardrails: domain allow/deny, robots policy flag, rate limit, batch caps.
 - Exposes identical tool names to ease drop-in usage.
 
 Run
 - Env vars: see ../env.example
-- Local: `npm --workspace @clone/brightdata-mcp start`
-- As CLI: `npx bright-mcp-clone`
+- Start scraper first: `npm run start:scraper`
+- Launch MCP clone via bridge: `npm run start:bridge` (spawns server automatically)
+- Direct CLI (advanced): `node apps/bright-mcp-clone/server.js`
 
 Notes
-- This clone makes direct HTTP calls to Bright Data APIs. Provide `API_TOKEN` and optionally zones.
-- Dataset tools are generated at startup from `config/datasets.json`. You can update/sync this list using `apps/mcp-bridge/scripts/sync-datasets.js` (optional).
+- Browser + dataset tools require valid Bright Data credentials (`API_TOKEN`, zones).
+- Dataset tools load from `config/datasets.json`. Update or sync via `npm run sync:datasets`.
 
