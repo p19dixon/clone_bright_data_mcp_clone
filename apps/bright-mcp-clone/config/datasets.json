@@ -1,0 +1,365 @@
+{
+  "note": "Auto-synced from reference/brightdata-mcp/server.js",
+  "datasets": [
+    {
+      "id": "amazon_product",
+      "dataset_id": "gd_l7q7dkf244hwjntr0",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured amazon product data.\nRequires a valid product URL with /dp/ in it.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "amazon_product_reviews",
+      "dataset_id": "gd_le8e811kzy4ggddlq",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured amazon product review data.\nRequires a valid product URL with /dp/ in it.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "amazon_product_search",
+      "dataset_id": "gd_lwdb4vjm1ehb499uxs",
+      "inputs": [
+        "keyword",
+        "url",
+        "pages_to_search"
+      ],
+      "defaults": {
+        "pages_to_search": "1"
+      },
+      "description": "Quickly read structured amazon product search data.\nRequires a valid search keyword and amazon domain URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "walmart_product",
+      "dataset_id": "gd_l95fol7l1ru6rlo116",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured walmart product data.\nRequires a valid product URL with /ip/ in it.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "walmart_seller",
+      "dataset_id": "gd_m7ke48w81ocyu4hhz0",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured walmart seller data.\nRequires a valid walmart seller URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "ebay_product",
+      "dataset_id": "gd_ltr9mjt81n0zzdk1fb",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured ebay product data.\nRequires a valid ebay product URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "homedepot_products",
+      "dataset_id": "gd_lmusivh019i7g97q2n",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured homedepot product data.\nRequires a valid homedepot product URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "zara_products",
+      "dataset_id": "gd_lct4vafw1tgx27d4o0",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured zara product data.\nRequires a valid zara product URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "etsy_products",
+      "dataset_id": "gd_ltppk0jdv1jqz25mz",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured etsy product data.\nRequires a valid etsy product URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "bestbuy_products",
+      "dataset_id": "gd_ltre1jqe1jfr7cccf",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured bestbuy product data.\nRequires a valid bestbuy product URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "linkedin_person_profile",
+      "dataset_id": "gd_l1viktl72bvl7bjuj0",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured linkedin people profile data.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "linkedin_company_profile",
+      "dataset_id": "gd_l1vikfnt1wgvvqz95w",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured linkedin company profile data\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "linkedin_job_listings",
+      "dataset_id": "gd_lpfll7v5hcqtkxl6l",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured linkedin job listings data\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "linkedin_posts",
+      "dataset_id": "gd_lyy3tktm25m4avu764",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured linkedin posts data\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "linkedin_people_search",
+      "dataset_id": "gd_m8d03he47z8nwb5xc",
+      "inputs": [
+        "url",
+        "first_name",
+        "last_name"
+      ],
+      "description": "Quickly read structured linkedin people search data\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "crunchbase_company",
+      "dataset_id": "gd_l1vijqt9jfj7olije",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured crunchbase company data\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "zoominfo_company_profile",
+      "dataset_id": "gd_m0ci4a4ivx3j5l6nx",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured ZoomInfo company profile data.\nRequires a valid ZoomInfo company URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "instagram_profiles",
+      "dataset_id": "gd_l1vikfch901nx3by4",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured Instagram profile data.\nRequires a valid Instagram URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "instagram_posts",
+      "dataset_id": "gd_lk5ns7kz21pck8jpis",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured Instagram post data.\nRequires a valid Instagram URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "instagram_reels",
+      "dataset_id": "gd_lyclm20il4r5helnj",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured Instagram reel data.\nRequires a valid Instagram URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "instagram_comments",
+      "dataset_id": "gd_ltppn085pokosxh13",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured Instagram comments data.\nRequires a valid Instagram URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "facebook_posts",
+      "dataset_id": "gd_lyclm1571iy3mv57zw",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured Facebook post data.\nRequires a valid Facebook post URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "facebook_marketplace_listings",
+      "dataset_id": "gd_lvt9iwuh6fbcwmx1a",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured Facebook marketplace listing data.\nRequires a valid Facebook marketplace listing URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "facebook_company_reviews",
+      "dataset_id": "gd_m0dtqpiu1mbcyc2g86",
+      "inputs": [
+        "url",
+        "num_of_reviews"
+      ],
+      "description": "Quickly read structured Facebook company reviews data.\nRequires a valid Facebook company URL and number of reviews.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "facebook_events",
+      "dataset_id": "gd_m14sd0to1jz48ppm51",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured Facebook events data.\nRequires a valid Facebook event URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "tiktok_profiles",
+      "dataset_id": "gd_l1villgoiiidt09ci",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured Tiktok profiles data.\nRequires a valid Tiktok profile URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "tiktok_posts",
+      "dataset_id": "gd_lu702nij2f790tmv9h",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured Tiktok post data.\nRequires a valid Tiktok post URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "tiktok_shop",
+      "dataset_id": "gd_m45m1u911dsa4274pi",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured Tiktok shop data.\nRequires a valid Tiktok shop product URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "tiktok_comments",
+      "dataset_id": "gd_lkf2st302ap89utw5k",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured Tiktok comments data.\nRequires a valid Tiktok video URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "google_maps_reviews",
+      "dataset_id": "gd_luzfs1dn2oa0teb81",
+      "inputs": [
+        "url",
+        "days_limit"
+      ],
+      "defaults": {
+        "days_limit": "3"
+      },
+      "description": "Quickly read structured Google maps reviews data.\nRequires a valid Google maps URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "google_shopping",
+      "dataset_id": "gd_ltppk50q18kdw67omz",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured Google shopping data.\nRequires a valid Google shopping product URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "google_play_store",
+      "dataset_id": "gd_lsk382l8xei8vzm4u",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured Google play store data.\nRequires a valid Google play store app URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "apple_app_store",
+      "dataset_id": "gd_lsk9ki3u2iishmwrui",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured apple app store data.\nRequires a valid apple app store app URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "reuter_news",
+      "dataset_id": "gd_lyptx9h74wtlvpnfu",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured reuter news data.\nRequires a valid reuter news report URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "github_repository_file",
+      "dataset_id": "gd_lyrexgxc24b3d4imjt",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured github repository data.\nRequires a valid github repository file URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "yahoo_finance_business",
+      "dataset_id": "gd_lmrpz3vxmz972ghd7",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured yahoo finance business data.\nRequires a valid yahoo finance business URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "x_posts",
+      "dataset_id": "gd_lwxkxvnf1cynvib9co",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured X post data.\nRequires a valid X post URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "zillow_properties_listing",
+      "dataset_id": "gd_lfqkr8wm13ixtbd8f5",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured zillow properties listing data.\nRequires a valid zillow properties listing URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "booking_hotel_listings",
+      "dataset_id": "gd_m5mbdl081229ln6t4a",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured booking hotel listings data.\nRequires a valid booking hotel listing URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "youtube_profiles",
+      "dataset_id": "gd_lk538t2k2p1k3oos71",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured youtube profiles data.\nRequires a valid youtube profile URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "youtube_comments",
+      "dataset_id": "gd_lk9q0ew71spt1mxywf",
+      "inputs": [
+        "url",
+        "num_of_comments"
+      ],
+      "defaults": {
+        "num_of_comments": "10"
+      },
+      "description": "Quickly read structured youtube comments data.\nRequires a valid youtube video URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "reddit_posts",
+      "dataset_id": "gd_lvz8ah06191smkebj4",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured reddit posts data.\nRequires a valid reddit post URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    },
+    {
+      "id": "youtube_videos",
+      "dataset_id": "gd_lk56epmy2i5g7lzu0k",
+      "inputs": [
+        "url"
+      ],
+      "description": "Quickly read structured YouTube videos data.\nRequires a valid YouTube video URL.\nThis can be a cache lookup, so it can be more reliable than scraping"
+    }
+  ]
+}

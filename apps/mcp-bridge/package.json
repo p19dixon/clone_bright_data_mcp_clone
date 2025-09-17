@@ -1,0 +1,13 @@
+{
+  "name": "mcp-bridge",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "HTTP bridge + agent that spawns an MCP server and exposes REST + chat to an LLM",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "axios": "^1.11.0"
+  }
+}
+

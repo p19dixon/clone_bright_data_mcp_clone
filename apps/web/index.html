@@ -1,0 +1,247 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MCP Clone Test Console</title>
+    <style>
+      body { font-family: system-ui, sans-serif; margin: 0; display: grid; grid-template-columns: 320px 1fr; height: 100vh; }
+      aside { border-right: 1px solid #ddd; padding: 12px; overflow: auto; }
+      main { padding: 12px; overflow: auto; }
+      h2 { margin-top: 0; }
+      textarea { width: 100%; height: 120px; }
+      code, pre { background: #f6f8fa; padding: 8px; display: block; overflow: auto; }
+      label { display: block; margin: 6px 0; }
+      input[type="text"], input[type="url"] { width: 100%; }
+      .row { display: flex; gap: 8px; align-items: center; }
+      .tools { font-size: 12px; }
+      #sessions-container { display: flex; gap: 12px; margin-top: 8px; }
+      #sessions-list { list-style: none; padding: 0; margin: 0; max-width: 280px; border: 1px solid #ddd; border-radius: 4px; overflow: auto; max-height: 240px; }
+      #sessions-list li { padding: 6px 8px; border-bottom: 1px solid #eee; }
+      #sessions-list li:hover { background: #f0f4ff; }
+      #sessions-detail { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+      #session-json { min-height: 150px; }
+    </style>
+  </head>
+  <body>
+    <aside>
+      <h2>Guardrails</h2>
+      <label><input type="checkbox" id="gr-enabled" checked> Enabled</label>
+      <label>Allow Domains (comma-separated)
+        <input type="text" id="gr-allow" placeholder="example.com, another.com" />
+      </label>
+      <label>Deny Domains (comma-separated)
+        <input type="text" id="gr-deny" placeholder="blocked.com" />
+      </label>
+      <label><input type="checkbox" id="gr-robots"> Respect robots.txt (bridge-only)</label>
+      <label>Per-domain concurrency
+        <input type="number" id="gr-conc" value="2" min="0" />
+      </label>
+      <label>Domain concurrency overrides (JSON)
+        <textarea id="gr-domain-overrides" placeholder='{"example.com":1}'></textarea>
+      </label>
+      <label>Max agent steps
+        <input type="number" id="gr-steps" value="5" min="1" />
+      </label>
+      <label>Step timeout (ms)
+        <input type="number" id="gr-timeout" value="120000" min="1000" />
+      </label>
+      <label>Max tool calls per chat
+        <input type="number" id="gr-maxcalls" value="50" min="1" />
+      </label>
+      <label>Per-tool call caps (JSON)
+        <textarea id="gr-tool-caps" placeholder='{"search_engine":3}'></textarea>
+      </label>
+      <label>Max Batch
+        <input type="text" id="gr-maxbatch" value="10" />
+      </label>
+      <button id="gr-save">Save Guardrails</button>
+      <hr/>
+      <h2>Tools</h2>
+      <div id="tools" class="tools"></div>
+    </aside>
+    <main>
+      <h2>Chat (Agent)</h2>
+      <textarea id="chat" placeholder="Ask something (the agent may call tools)"></textarea>
+      <div class="row">
+        <button id="send">Send</button>
+        <button id="stream">Stream</button>
+        <span id="status"></span>
+      </div>
+      <pre id="output"></pre>
+      <hr/>
+      <h2>Direct Tool Call</h2>
+      <label>Tool Name
+        <input type="text" id="tool-name" placeholder="search_engine" />
+      </label>
+      <label>Arguments (JSON)
+        <textarea id="tool-args" placeholder='{"query":"Bright Data"}'></textarea>
+      </label>
+      <button id="tool-run">Run Tool</button>
+      <pre id="tool-result"></pre>
+      <hr/>
+      <h2>Sessions</h2>
+      <div class="row">
+        <button id="sessions-refresh">Refresh Sessions</button>
+        <span id="sessions-status"></span>
+      </div>
+      <div id="sessions-container">
+        <ul id="sessions-list"></ul>
+        <div id="sessions-detail">
+          <pre id="session-json"></pre>
+          <button id="session-download" disabled>Download JSON</button>
+        </div>
+      </div>
+    </main>
+    <script>
+      async function loadGuardrails() {
+        const r = await fetch('/api/guardrails');
+        const g = await r.json();
+        document.getElementById('gr-enabled').checked = !!g.enabled;
+        document.getElementById('gr-allow').value = (g.allowDomains||[]).join(', ');
+        document.getElementById('gr-deny').value = (g.denyDomains||[]).join(', ');
+        document.getElementById('gr-robots').checked = !!g.respectRobotsTxt;
+        document.getElementById('gr-conc').value = g.perDomainConcurrency ?? 2;
+        document.getElementById('gr-domain-overrides').value = JSON.stringify(g.domainConcurrencyOverrides||{}, null, 2);
+        document.getElementById('gr-steps').value = g.maxAgentSteps ?? 5;
+        document.getElementById('gr-timeout').value = g.stepTimeoutMs ?? 120000;
+        document.getElementById('gr-maxcalls').value = g.maxToolCallsPerChat ?? 50;
+        document.getElementById('gr-tool-caps').value = JSON.stringify(g.perToolCallCaps||{}, null, 2);
+        document.getElementById('gr-maxbatch').value = g.maxBatch||10;
+      }
+      async function saveGuardrails() {
+        const body = {
+          enabled: document.getElementById('gr-enabled').checked,
+          allowDomains: (document.getElementById('gr-allow').value||'').split(',').map(s=>s.trim()).filter(Boolean),
+          denyDomains: (document.getElementById('gr-deny').value||'').split(',').map(s=>s.trim()).filter(Boolean),
+          respectRobotsTxt: document.getElementById('gr-robots').checked,
+          perDomainConcurrency: parseInt(document.getElementById('gr-conc').value||'2', 10),
+          domainConcurrencyOverrides: (()=>{ try { return JSON.parse(document.getElementById('gr-domain-overrides').value||'{}'); } catch { return {}; } })(),
+          maxAgentSteps: parseInt(document.getElementById('gr-steps').value||'5', 10),
+          stepTimeoutMs: parseInt(document.getElementById('gr-timeout').value||'120000', 10),
+          maxToolCallsPerChat: parseInt(document.getElementById('gr-maxcalls').value||'50', 10),
+          perToolCallCaps: (()=>{ try { return JSON.parse(document.getElementById('gr-tool-caps').value||'{}'); } catch { return {}; } })(),
+          maxBatch: parseInt(document.getElementById('gr-maxbatch').value||'10', 10)
+        };
+        await fetch('/api/guardrails', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+        await loadGuardrails();
+      }
+      async function loadTools() {
+        const r = await fetch('/api/tools');
+        const d = await r.json();
+        const el = document.getElementById('tools');
+        el.innerHTML = (d.tools||[]).map(t => `• <b>${t.name}</b> – ${t.description||''}`).join('<br/>');
+      }
+      async function sendChat() {
+        const text = document.getElementById('chat').value.trim();
+        if (!text) return;
+        document.getElementById('status').textContent = 'Thinking...';
+        const r = await fetch('/api/chat', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ messages: [{ role: 'user', content: text }] }) });
+        const d = await r.json();
+        document.getElementById('status').textContent = '';
+        document.getElementById('output').textContent = JSON.stringify(d, null, 2);
+      }
+      async function streamChat() {
+        const text = document.getElementById('chat').value.trim();
+        if (!text) return;
+        document.getElementById('output').textContent = '';
+        const es = new EventSource(`/api/chat/stream?prompt=${encodeURIComponent(text)}&t=${Date.now()}`);
+        es.onmessage = (e) => {
+          // default message type
+          const prev = document.getElementById('output').textContent;
+          document.getElementById('output').textContent = prev + `\n${e.data}`;
+        };
+        es.addEventListener('assistant_decision', e => {
+          const prev = document.getElementById('output').textContent;
+          document.getElementById('output').textContent = prev + `\nassistant_decision: ${e.data}`;
+        });
+        es.addEventListener('tool_start', e => {
+          const prev = document.getElementById('output').textContent;
+          document.getElementById('output').textContent = prev + `\ntool_start: ${e.data}`;
+        });
+        es.addEventListener('tool_result', e => {
+          const prev = document.getElementById('output').textContent;
+          document.getElementById('output').textContent = prev + `\ntool_result: ${e.data}`;
+        });
+        es.addEventListener('final', e => {
+          const prev = document.getElementById('output').textContent;
+          document.getElementById('output').textContent = prev + `\nfinal: ${e.data}`;
+          es.close();
+        });
+        es.addEventListener('limit', e => {
+          const prev = document.getElementById('output').textContent;
+          document.getElementById('output').textContent = prev + `\nlimit: ${e.data}`;
+          es.close();
+        });
+        es.addEventListener('error', e => {
+          const prev = document.getElementById('output').textContent;
+          document.getElementById('output').textContent = prev + `\nerror: ${e.data}`;
+          es.close();
+        });
+      }
+      async function runTool() {
+        const name = document.getElementById('tool-name').value.trim();
+        const args = (() => { try { return JSON.parse(document.getElementById('tool-args').value||'{}'); } catch { return {}; } })();
+        const r = await fetch('/api/call', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name, args }) });
+        const d = await r.json();
+        document.getElementById('tool-result').textContent = JSON.stringify(d, null, 2);
+      }
+      let sessionsCache = [];
+      let selectedSession = null;
+      function renderSessions(list) {
+        const ul = document.getElementById('sessions-list');
+        ul.innerHTML = '';
+        list.slice().reverse().forEach(session => {
+          const li = document.createElement('li');
+          li.textContent = `${session.id || 'n/a'} – ${session.endedAt || ''} – steps:${session.steps?.length || 0}`;
+          li.style.cursor = 'pointer';
+          li.addEventListener('click', () => selectSession(session));
+          ul.appendChild(li);
+        });
+        if (!list.length) {
+          const li = document.createElement('li');
+          li.textContent = 'No sessions recorded yet.';
+          ul.appendChild(li);
+        }
+      }
+      function selectSession(session) {
+        selectedSession = session;
+        document.getElementById('session-json').textContent = JSON.stringify(session, null, 2);
+        document.getElementById('session-download').disabled = !session;
+      }
+      async function loadSessions() {
+        document.getElementById('sessions-status').textContent = 'Loading...';
+        try {
+          const r = await fetch('/api/sessions');
+          const data = await r.json();
+          sessionsCache = data.sessions || [];
+          renderSessions(sessionsCache);
+          document.getElementById('sessions-status').textContent = '';
+        } catch (e) {
+          document.getElementById('sessions-status').textContent = 'Error loading sessions';
+        }
+      }
+      function downloadSession() {
+        if (!selectedSession) return;
+        const blob = new Blob([JSON.stringify(selectedSession, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${selectedSession.id || 'session'}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+      document.getElementById('gr-save').addEventListener('click', saveGuardrails);
+      document.getElementById('send').addEventListener('click', sendChat);
+      document.getElementById('stream').addEventListener('click', streamChat);
+      document.getElementById('tool-run').addEventListener('click', runTool);
+      document.getElementById('sessions-refresh').addEventListener('click', loadSessions);
+      document.getElementById('session-download').addEventListener('click', downloadSession);
+      loadGuardrails();
+      loadTools();
+      loadSessions();
+    </script>
+  </body>
+  </html>

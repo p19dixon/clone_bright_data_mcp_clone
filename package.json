@@ -1,0 +1,18 @@
+{
+  "name": "brightdata-mcp-clone-workspace",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "start:mcp": "node apps/bright-mcp-clone/server.js",
+    "start:bridge": "node apps/mcp-bridge/server.js",
+    "start": "npm run start:bridge",
+    "test": "node --test",
+    "sync:datasets": "node scripts/sync-datasets-from-reference.js"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
