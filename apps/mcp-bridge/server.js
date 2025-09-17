@@ -13,10 +13,11 @@ import { appendSession, listSessions } from './storage.js';
 const PORT = process.env.PORT || 8765;
 
 // Spawn our MCP clone
+const mcpEnv = { API_TOKEN: process.env.API_TOKEN, WEB_UNLOCKER_ZONE: process.env.WEB_UNLOCKER_ZONE, BROWSER_ZONE: process.env.BROWSER_ZONE, PRO_MODE: process.env.PRO_MODE, RATE_LIMIT: process.env.RATE_LIMIT, SCRAPER_BASE_URL: process.env.SCRAPER_BASE_URL, SCRAPER_TIMEOUT_MS: process.env.SCRAPER_TIMEOUT_MS };
 const mcp = new McpClient({
   command: 'node',
   args: [path.join(process.cwd(), 'apps/bright-mcp-clone/server.js')],
-  env: { API_TOKEN: process.env.API_TOKEN, WEB_UNLOCKER_ZONE: process.env.WEB_UNLOCKER_ZONE, BROWSER_ZONE: process.env.BROWSER_ZONE, PRO_MODE: process.env.PRO_MODE, RATE_LIMIT: process.env.RATE_LIMIT }
+  env: mcpEnv
 });
 (async () => { try { await mcp.start(); } catch (e) { console.error('MCP start error', e); } })();
 

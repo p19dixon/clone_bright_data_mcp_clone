@@ -10,7 +10,7 @@
     "start:mcp": "node apps/bright-mcp-clone/server.js",
     "start:bridge": "node apps/mcp-bridge/server.js",
     "start": "npm run start:bridge",
-    "test": "node --test",
+    "test": "TS_NODE_TRANSPILE_ONLY=1 TS_NODE_PROJECT=tsconfig.json node --loader ts-node/esm --test",
     "sync:datasets": "node scripts/sync-datasets-from-reference.js",
     "build": "npm run build --workspaces",
     "lint": "eslint . --ext js,ts,tsx",
@@ -30,6 +30,7 @@
     "globals": "^16.4.0",
     "pino-pretty": "^13.1.1",
     "prettier": "^3.6.2",
+    "ts-node": "^10.9.2",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.44.0"

@@ -36,10 +36,7 @@ const searchBatchSchema = z.object({
 });
 
 export function buildServer() {
-  const logger = createLogger({ service: 'scraper' });
-  const app = Fastify({
-    logger
-  });
+  const app = Fastify({ logger: false });
 
   if (config.enableCors) {
     app.register(cors, { origin: true });
@@ -121,12 +118,13 @@ export function buildServer() {
 }
 
 export async function start() {
+  const logger = createLogger({ service: 'scraper' });
   const server = buildServer();
   try {
     await server.listen({ port: config.port, host: config.host });
-    server.log.info({ port: config.port, host: config.host }, 'Scraper service listening');
+    logger.info({ port: config.port, host: config.host }, 'Scraper service listening');
   } catch (error) {
-    server.log.error(error, 'Failed to start scraper service');
+    logger.error(error, 'Failed to start scraper service');
     process.exit(1);
   }
 }
